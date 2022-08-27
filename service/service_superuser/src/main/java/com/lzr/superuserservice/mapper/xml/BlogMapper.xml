@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzr.superuserservice.mapper.BlogMapper">
+    <resultMap id="BlogQuery" type="com.lzr.superuserservice.entity.vo.BlogQuery">
+        <result column="blog_id" property="blogId"></result>
+        <result column="title" property="title"></result>
+        <result column="author" property="author"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="modified_time" property="modifiedTime"></result>
+    </resultMap>
+
+    <select id="findByPage" resultMap="BlogQuery">
+        select blog_id,title,name as author,blog.create_time,blog.modified_time from blog left join user on blog.uid = user.uid
+            <where>
+                blog.is_deleted = 0
+                <if test="blogQuery != null">
+                    <if test="blogQuery.title != null">
+                        AND title like CONCAT('%',#{blogQuery.title},'%')
+                    </if>
+                    <if test="blogQuery.author != null">
+                        AND user.name like CONCAT('%',#{blogQuery.author},'%')
+                    </if>
+                    <if test="blogQuery.createTime != null">
+                        AND blog.create_time &gt;= #{blogQuery.createTime}
+                    </if>
+                    <if test="blogQuery.modifiedTime != null">
+                        AND blog.modified_time &lt;= #{blogQuery.modifiedTime}
+                    </if>
+                </if>
+            </where>
+    </select>
+</mapper>
