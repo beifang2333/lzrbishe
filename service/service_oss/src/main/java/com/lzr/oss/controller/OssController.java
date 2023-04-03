@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping("/blogoss/fileoss")
+@RequestMapping("/eduoss/fileoss")
 @CrossOrigin
 public class OssController {
 

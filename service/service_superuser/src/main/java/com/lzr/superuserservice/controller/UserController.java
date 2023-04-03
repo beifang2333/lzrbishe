@@ -7,6 +7,7 @@ import com.lzr.commonutils.R;
 import com.lzr.superuserservice.entity.User;
 import com.lzr.superuserservice.entity.vo.UserQuery;
 import com.lzr.superuserservice.service.UserService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -38,6 +39,7 @@ public class UserController {
         return R.ok().data("user",userService.getById(id));
     }
 
+    @ApiOperation("条件查询用户")
     @PostMapping("getUserListPage/{current}/{limit}")
     public R getUserListPage(@PathVariable long current, @PathVariable long limit, @RequestBody(required = false) UserQuery userQuery){
         Page<User> pageUser = new Page<>(current,limit);

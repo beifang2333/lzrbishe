@@ -23,15 +23,18 @@ public class SuperuserServiceImpl extends ServiceImpl<SuperuserMapper, Superuser
 
     @Override
     public String login(Superuser superuserInfo) {
-        String name = superuserInfo.getName();
+        String username = superuserInfo.getUsername();
         String password = superuserInfo.getPassword();
-        if (StringUtils.isEmpty(name)||StringUtils.isEmpty(password)){
+        if (StringUtils.isEmpty(username)||StringUtils.isEmpty(password)){
             throw new GuliException(20001,"账号或密码为空");
         }
         QueryWrapper<Superuser> wrapper = new QueryWrapper<>();
-        wrapper.eq("name",name).eq("password",password);
+        wrapper.eq("username",username).eq("password",password);
         Superuser superuser = baseMapper.selectOne(wrapper);
-        String token = JwtUtils.getJwtToken(superuser.getId().toString(), superuser.getName());
+        if (superuser==null){
+            throw new GuliException(20001,"账号或密码错误");
+        }
+        String token = JwtUtils.getJwtToken(superuser.getId().toString(), superuser.getUsername());
         return token;
     }
 }
