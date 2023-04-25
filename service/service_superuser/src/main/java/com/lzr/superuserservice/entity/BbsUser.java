@@ -1,8 +1,11 @@
 package com.lzr.superuserservice.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
+import java.util.Date;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -50,11 +53,13 @@ public class BbsUser implements Serializable {
     @ApiModelProperty(value = "签名")
     private String sign;
 
+    @TableField(fill = FieldFill.INSERT)
     @ApiModelProperty(value = "注册时间")
-    private String createTime;
+    private Date createTime;
 
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     @ApiModelProperty(value = "修改时间")
-    private String modifiedTime;
+    private Date modifiedTime;
 
     @ApiModelProperty(value = "头像")
     private String userImage;

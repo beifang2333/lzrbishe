@@ -3,6 +3,8 @@ package com.lzr.superuserservice.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
+import java.util.Date;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -39,7 +41,9 @@ public class BbsPost implements Serializable {
     private Integer userId;
 
     @ApiModelProperty(value = "回帖时间")
-    private String postTime;
+    private Date postTime;
 
+    @ApiModelProperty(value = "状态")
+    private String status;
 
 }

@@ -1,8 +1,10 @@
 package com.lzr.superuserservice.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.*;
+
 import java.io.Serializable;
+import java.util.Date;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -51,12 +53,15 @@ public class BbsTopic implements Serializable {
     @ApiModelProperty(value = "排名级别")
     private Integer topicLevel;
 
+    @TableLogic
     private Integer isDeleted;
 
     @ApiModelProperty(value = "发布时间")
-    private String createTime;
+    @TableField(fill = FieldFill.INSERT)
+    private Date createTime;
 
-    private String modifiedTime;
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private Date modifiedTime;
 
 
 }

@@ -23,7 +23,7 @@ import java.util.List;
  * @since 2023-03-05
  */
 @RestController
-@RequestMapping("/superuserservice/bbs-plate")
+@RequestMapping("/superuserservice/bbsplate")
 @CrossOrigin
 public class BbsPlateController {
     @Autowired

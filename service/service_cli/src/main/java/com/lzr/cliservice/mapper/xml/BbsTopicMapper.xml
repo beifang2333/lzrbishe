@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzr.cliservice.mapper.BbsTopicMapper">
+    <resultMap id="TopicListQuery" type="com.lzr.cliservice.entity.vo.TopicListQuery">
+        <result column="topic_id" property="topicId"></result>
+        <result column="topic" property="topic"></result>
+        <result column="content" property="content"></result>
+        <result column="user_image" property="userImage"></result>
+        <result column="username" property="username"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="view_count" property="viewCount"></result>
+        <result column="plate_name" property="plateName"></result>
+    </resultMap>
+    <select id="findByPage" resultMap="TopicListQuery">
+        select topic_id,topic,content,bbs_user.user_image,bbs_user.username,bbs_topic.create_time,view_count from bbs_topic left join bbs_user on bbs_topic.user_id = bbs_user.user_id
+        <where>
+            bbs_topic.is_deleted = 0
+            and
+            bbs_topic.status = "Normal"
+            <if test="topicListQuery != null">
+                <if test="topicListQuery.topic != null">
+                    AND topic like CONCAT('%',#{topicListQuery.topic},'%')
+                </if>
+                <if test="topicListQuery.username != null">
+                    AND bbs_user.username = #{topicListQuery.username}
+                </if>
+                <if test="topicListQuery.plateName != null">
+                    AND bbs_topic.plate_name = #{topicListQuery.plateName}
+                </if>
+            </if>
+        </where>
+        order by create_time desc
+    </select>
+
+    <select id="listAll" resultMap="TopicListQuery">
+        select topic_id,topic,content,bbs_user.user_image,bbs_user.username,bbs_topic.create_time,view_count from bbs_topic left join bbs_user on bbs_topic.user_id = bbs_user.user_id
+        <where>
+            bbs_topic.is_deleted = 0
+            and
+            bbs_topic.status = "Normal"
+            and
+            bbs_topic.plate_name = #{PlateName}
+        </where>
+        order by create_time desc
+    </select>
+
+    <update id="addViewCount">
+        update bbs_topic set view_count = view_count+1 where topic_id = #{topicId}
+    </update>
+</mapper>

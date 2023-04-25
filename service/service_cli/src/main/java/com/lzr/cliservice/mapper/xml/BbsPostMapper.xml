@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzr.cliservice.mapper.BbsPostMapper">
+    <resultMap id="PostList" type="com.lzr.cliservice.entity.vo.PostList">
+        <result column="post_id" property="postId"></result>
+        <result column="post_content" property="postContent"></result>
+        <result column="user_id" property="userId"></result>
+        <result column="post_time" property="postTime"></result>
+        <result column="user_image" property="userImage"></result>
+        <result column="username" property="userName"></result>
+    </resultMap>
+    <select id="findPostList" resultMap="PostList">
+        select post_id,post_content,bbs_post.user_id,post_time,user_image,username
+        from bbs_post left join bbs_user on bbs_post.user_id = bbs_user.user_id where topic_id = #{topicId} and bbs_post.status = "Normal"
+    </select>
+</mapper>

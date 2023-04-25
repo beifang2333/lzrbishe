@@ -1,5 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lzr.superuserservice.mapper.BbsPostMapper">
+    <resultMap id="BbsPostQuery" type="com.lzr.superuserservice.entity.vo.BbsPostQuery">
+        <result column="post_id" property="postId"></result>
+        <result column="username" property="username"></result>
+        <result column="topic_id" property="topicId"></result>
+        <result column="topic" property="topic"></result>
+        <result column="post_content" property="postContent"></result>
+        <result column="post_time" property="postTime"></result>
+    </resultMap>
 
+    <select id="findByPage" resultMap="BbsPostQuery">
+        select post_id,bbs_user.username,topic,bbs_topic.topic_id,post_content,post_time
+        from bbs_post inner join bbs_user on bbs_post.user_id = bbs_user.user_id
+        inner join bbs_topic on bbs_topic.topic_id = bbs_post.topic_id
+        <where>
+            and bbs_post.status = "Normal"
+            <if test="postQuery != null">
+                <if test="postQuery.username != null">
+                    AND bbs_user.username like CONCAT('%',#{postQuery.username},'%')
+                </if>
+                <if test="postQuery.topic != null">
+                    AND bbs_topic.topic like CONCAT('%',#{postQuery.topic},'%')
+                </if>
+                <if test="postQuery.postTime != null">
+                    AND post_time &gt;= #{postQuery.postTime}
+                </if>
+                <if test="postQuery.endTime != null">
+                    AND post_time &lt;= #{postQuery.endTime}
+                </if>
+            </if>
+        </where>
+        order by post_time desc
+    </select>
+    <select id="findAuditByPage" resultMap="BbsPostQuery">
+        select post_id,bbs_user.username,topic,bbs_topic.topic_id,post_content,post_time
+        from bbs_post inner join bbs_user on bbs_post.user_id = bbs_user.user_id
+        inner join bbs_topic on bbs_topic.topic_id = bbs_post.topic_id
+        <where>
+            and bbs_post.status = "Draft"
+            <if test="postQuery != null">
+                <if test="postQuery.username != null">
+                    AND bbs_user.username = #{postQuery.username}
+                </if>
+                <if test="postQuery.topic != null">
+                    AND bbs_topic.topic like CONCAT('%',#{postQuery.topic},'%')
+                </if>
+                <if test="postQuery.postTime != null">
+                    AND post_time &gt;= #{postQuery.postTime}
+                </if>
+                <if test="postQuery.endTime != null">
+                    AND post_time &lt;= #{postQuery.endTime}
+                </if>
+            </if>
+        </where>
+        order by post_time desc
+    </select>
 </mapper>

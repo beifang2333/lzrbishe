@@ -1,5 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lzr.superuserservice.mapper.BbsTopicMapper">
+    <resultMap id="BbsTopicQuery" type="com.lzr.superuserservice.entity.vo.BbsTopicQuery">
+        <result column="topic_id" property="topicId"></result>
+        <result column="topic" property="topic"></result>
+        <result column="username" property="username"></result>
+        <result column="topic_level" property="topicLevel"></result>
+        <result column="content" property="content"></result>
+        <result column="plate_name" property="plateName"></result>
+        <result column="view_count" property="viewCount"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="modified_time" property="modifiedTime"></result>
+    </resultMap>
 
+    <select id="findByPage" resultMap="BbsTopicQuery">
+        select topic_id,topic,username,topic_level,content,plate_name,view_count,create_time,modified_time from bbs_topic
+        <where>
+            status = 'Normal' and is_deleted=0
+            <if test="bbsTopic != null">
+                <if test="bbsTopic.topic != null">
+                    AND topic like CONCAT('%',#{bbsTopic.topic},'%')
+                </if>
+                <if test="bbsTopic.username != null">
+                    AND username like CONCAT('%',#{bbsTopic.username},'%')
+                </if>
+                <if test="bbsTopic.topicLevel != null">
+                    AND topic_level = #{bbsTopic.topicLevel}
+                </if>
+                <if test="bbsTopic.createTime != null">
+                    AND create_time &gt;= #{bbsTopic.createTime}
+                </if>
+                <if test="bbsTopic.modifiedTime != null">
+                    AND modified_time &lt;= #{bbsTopic.modifiedTime}
+                </if>
+            </if>
+        </where>
+        order by create_time desc
+    </select>
+    <select id="findAuditByPage" resultMap="BbsTopicQuery">
+        select topic_id,topic,username,topic_level,content,plate_name,view_count,create_time,modified_time from bbs_topic
+        <where>
+            status = 'Draft' and is_deleted=0
+            <if test="bbsTopic != null">
+                <if test="bbsTopic.topic != null">
+                    AND topic like CONCAT('%',#{bbsTopic.topic},'%')
+                </if>
+                <if test="bbsTopic.username != null">
+                    AND username like CONCAT('%',#{bbsTopic.username},'%')
+                </if>
+                <if test="bbsTopic.topicLevel != null">
+                    AND topic_level = #{bbsTopic.topicLevel}
+                </if>
+                <if test="bbsTopic.createTime != null">
+                    AND create_time &gt;= #{bbsTopic.createTime}
+                </if>
+                <if test="bbsTopic.modifiedTime != null">
+                    AND modified_time &lt;= #{bbsTopic.modifiedTime}
+                </if>
+            </if>
+        </where>
+        order by create_time desc
+    </select>
 </mapper>

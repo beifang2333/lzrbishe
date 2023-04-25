@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2023-03-05
  */
 @RestController
-@RequestMapping("/superuserservice/bbs-collect")
+@RequestMapping("/superuserservice/bbscollect")
 public class BbsCollectController {
 
 }
